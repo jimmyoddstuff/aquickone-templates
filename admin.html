@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - {{siteName}}</title>
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f0f9ff 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+        
+        .action-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.08);
+            border-radius: 20px;
+            padding: 1.5rem;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        
+        .action-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.1);
+            border-color: rgba(99, 102, 241, 0.2);
+            color: inherit;
+        }
+        
+        .icon-wrapper {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .action-card:hover .icon-wrapper {
+            transform: scale(1.1) rotate(5deg);
+        }
+        
+        .tab-btn {
+            padding: 12px 24px;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            border: none;
+            background: transparent;
+        }
+        
+        .tab-btn.active {
+            color: #4f46e5;
+            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+        }
+        
+        .tab-btn:hover:not(.active) {
+            background: rgba(79, 70, 229, 0.05);
+        }
+        
+        .article-row {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            padding: 1rem;
+            margin-bottom: 0.75rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        
+        .article-row:hover {
+            background: rgba(255, 255, 255, 0.95);
+            border-color: rgba(99, 102, 241, 0.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            color: white;
+        }
+        
+        .btn-secondary-custom {
+            background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+            border: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: white;
+        }
+        
+        .btn-secondary-custom:hover {
+            background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+            transform: translateY(-2px);
+            color: white;
+        }
+        
+        .tool-card {
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 16px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(99, 102, 241, 0.06);
+        }
+        
+        .tool-card:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateX(5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+        }
+        
+        .glass-modal {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 24px;
+            border: 1px solid rgba(99, 102, 241, 0.08);
+        }
+        
+        .stat-badge {
+            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+            border-radius: 10px;
+            padding: 4px 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #4f46e5;
+        }
+        
+        .category-tag {
+            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+            color: #4f46e5;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .draft-tag {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border: none;
+            text-decoration: none;
+        }
+        
+        .icon-btn:hover {
+            transform: scale(1.15);
+        }
+        
+        .icon-btn.edit {
+            background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+            color: #2563eb;
+        }
+        
+        .icon-btn.delete {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+        }
+        
+        .icon-btn.publish {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+            color: #059669;
+        }
+        
+        .notification {
+            animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: rgba(238, 242, 255, 0.3);
+            border-radius: 10px;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 10px;
+        }
+
+        /* Focus-visible ring for accessibility */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 3px solid #4f46e5 !important;
+            outline-offset: 2px !important;
+        }
+
+        /* Respect prefers-reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .action-card:hover, .tool-card:hover, .btn-primary-custom:hover {
+                transform: none !important;
+            }
+        }
+    </style>
+    
+    {{codeBeforHead}}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar-custom sticky-top">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center py-3">
+                <div class="d-flex align-items-center">
+                    <div class="rounded-3 d-flex align-items-center justify-content-center me-3" 
+                         style="width: 44px; height: 44px; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);">
+                        <i class="fas fa-gauge-high text-white fs-5"></i>
+                    </div>
+                    <div>
+                        <h1 class="fs-5 fw-bold text-dark mb-0">Admin Dashboard</h1>
+                        <p class="text-muted small mb-0 d-none d-sm-block">Manage your blog content</p>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <a href="/" class="btn btn-outline-dark rounded-3 px-3 py-2 d-flex align-items-center gap-2">
+                        <i class="fas fa-eye"></i>
+                        <span class="d-none d-sm-inline">View Blog</span>
+                    </a>
+                    <button onclick="logout()" class="btn btn-outline-danger rounded-3 px-3 py-2 d-flex align-items-center gap-2">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="d-none d-sm-inline">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container py-4">
+        <!-- Quick Actions -->
+        <div class="row g-3 g-md-4 mb-4">
+            <div class="col-6 col-md-3">
+                <a href="/admin/edit" class="action-card text-center">
+                    <div class="icon-wrapper mx-auto mb-3" style="background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);">
+                        <i class="fas fa-plus text-white fs-4"></i>
+                    </div>
+                    <h3 class="fw-semibold text-dark mb-1">New Article</h3>
+                    <p class="text-muted d-none d-md-block small mb-0">Create new content</p>
+                </a>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <a href="/admin/users" class="action-card text-center">
+                    <div class="icon-wrapper mx-auto mb-3" style="background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%);">
+                        <i class="fas fa-user-gear text-white fs-4"></i>
+                    </div>
+                    <h3 class="fw-semibold text-dark mb-1">Admin Users</h3>
+                    <p class="text-muted d-none d-md-block small mb-0">Manage access</p>
+                </a>
+            </div>
+            
+            <div class="col-6 col-md-3">
+                <button onclick="exportArticles()" class="action-card text-center border-0 bg-transparent w-100" aria-label="Export articles JSON backup">
+                    <div class="icon-wrapper mx-auto mb-3" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+                        <i class="fas fa-download text-white fs-4" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="fw-semibold text-dark mb-1">Export</h3>
+                    <p class="text-muted d-none d-md-block small mb-0">Download backup</p>
+                </button>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <button onclick="openImportModal()" class="action-card text-center border-0 bg-transparent w-100" aria-label="Import articles from JSON backup">
+                    <div class="icon-wrapper mx-auto mb-3" style="background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);">
+                        <i class="fas fa-upload text-white fs-4" aria-hidden="true"></i>
+                    </div>
+                    <h3 class="fw-semibold text-dark mb-1">Import</h3>
+                    <p class="text-muted d-none d-md-block small mb-0">Restore data</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- Articles Management -->
+        <div class="card border-0 shadow-sm mb-4" style="border-radius: 20px; background: rgba(255,255,255,0.95);">
+            <div class="card-header border-0 bg-white px-4 py-3" style="border-radius: 20px 20px 0 0;">
+                <div class="d-flex flex-column sm:flex-row sm:justify-content-between sm:align-items-center gap-3">
+                    <div>
+                        <h2 class="fw-bold text-dark mb-1">Articles</h2>
+                        <p class="text-muted small mb-0">Manage your published and draft posts</p>
+                    </div>
+                    <a href="/admin/edit" class="btn btn-primary-custom text-white">
+                        <i class="fas fa-plus me-2"></i>New Article
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <div class="d-flex gap-2 mb-4 overflow-x-auto pb-2">
+                    <button id="published-tab" class="tab-btn active">
+                        <i class="fas fa-newspaper me-2"></i>Published
+                    </button>
+                    <button id="drafts-tab" class="tab-btn">
+                        <i class="fas fa-file-lines me-2"></i>Drafts
+                    </button>
+                </div>
+
+                <div id="published-list" aria-live="polite">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="text-muted">Loading articles...</p>
+                    </div>
+                </div>
+
+                <div id="drafts-list" class="d-none" aria-live="polite">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="text-muted">Loading drafts...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tools Grid -->
+        <div class="row g-4">
+            <!-- SEO Tools -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100" style="border-radius: 20px; background: rgba(255,255,255,0.95);">
+                    <div class="card-header border-0 bg-white px-4 py-3" style="border-radius: 20px 20px 0 0;">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center" 
+                                 style="width: 40px; height: 40px; background: linear-gradient(135deg, #f43f5e 0%, #fb7185 100%);">
+                                <i class="fas fa-chart-line text-white"></i>
+                            </div>
+                            <h2 class="fw-bold text-dark mb-0">SEO Tools</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <a href="/rss.xml" target="_blank" class="tool-card d-flex align-items-center justify-content-between mb-3 text-decoration-none">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center me-3" 
+                                     style="width: 44px; height: 44px; background: linear-gradient(135deg, #fed7aa 0%, #fdba74 100%);">
+                                    <i class="fas fa-rss text-orange-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="fw-semibold text-dark mb-0">RSS Feed</h3>
+                                    <p class="text-muted small mb-0">Subscribe to content updates</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-external-link-alt text-muted"></i>
+                        </a>
+                        
+                        <a href="/sitemap.xml" target="_blank" class="tool-card d-flex align-items-center justify-content-between text-decoration-none">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center me-3" 
+                                     style="width: 44px; height: 44px; background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%);">
+                                    <i class="fas fa-sitemap text-purple-500"></i>
+                                </div>
+                                <div>
+                                    <h3 class="fw-semibold text-dark mb-0">Sitemap</h3>
+                                    <p class="text-muted small mb-0">Search engine indexing</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-external-link-alt text-muted"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- System Tools -->
+            <div class="col-lg-6">
+                <div class="card border-0 shadow-sm h-100" style="border-radius: 20px; background: rgba(255,255,255,0.95);">
+                    <div class="card-header border-0 bg-white px-4 py-3" style="border-radius: 20px 20px 0 0;">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center" 
+                                 style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);">
+                                <i class="fas fa-cog text-white"></i>
+                            </div>
+                            <h2 class="fw-bold text-dark mb-0">System Tools</h2>
+                        </div>
+                    </div>
+                    <div class="card-body p-4">
+                        <button onclick="fixMissingArticles()" class="tool-card w-100 d-flex align-items-center justify-content-between text-start border-0 bg-transparent mb-3">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center me-3" 
+                                     style="width: 44px; height: 44px; background: linear-gradient(135deg, #fde68a 0%, #fcd34d 100%);">
+                                    <i class="fas fa-wrench text-yellow-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="fw-semibold text-dark mb-0">Fix Articles</h3>
+                                    <p class="text-muted small mb-0">Repair missing data</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-arrow-right text-muted"></i>
+                        </button>
+                        
+                        <button onclick="showDebugInfo()" class="tool-card w-100 d-flex align-items-center justify-content-between text-start border-0 bg-transparent">
+                            <div class="d-flex align-items-center">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center me-3" 
+                                     style="width: 44px; height: 44px; background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%);">
+                                    <i class="fas fa-bug text-purple-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="fw-semibold text-dark mb-0">System Info</h3>
+                                    <p class="text-muted small mb-0">Debug information</p>
+                                </div>
+                            </div>
+                            <i class="fas fa-arrow-right text-muted"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div id="import-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center" 
+                             style="width: 40px; height: 40px; background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);">
+                            <i class="fas fa-upload text-white" aria-hidden="true"></i>
+                        </div>
+                        <h5 class="modal-title fw-bold">Import Articles</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close modal"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">Select File</label>
+                        <input type="file" id="import-file" accept=".json" class="form-control rounded-3 border-2" style="border-color: #eef2ff;">
+                        <p class="text-muted small mt-2">
+                            <i class="fas fa-info-circle me-1"></i>Select exported JSON backup file
+                        </p>
+                    </div>
+                    
+                    <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-light flex-fill py-2 rounded-3" data-bs-dismiss="modal">Cancel</button>
+                        <button onclick="importArticles()" class="btn btn-secondary-custom flex-fill py-2 rounded-3">
+                            <i class="fas fa-upload me-2"></i>Import
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Debug Modal -->
+    <div id="debug-modal" class="modal fade" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center" 
+                             style="width: 40px; height: 40px; background: linear-gradient(135deg, #c4b5fd 0%, #a78bfa 100%);">
+                            <i class="fas fa-bug text-purple-600" aria-hidden="true"></i>
+                        </div>
+                        <h5 class="modal-title fw-bold">System Information</h5>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close modal"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <div id="debug-content" class="bg-light rounded-3 p-4">
+                        <div class="text-center py-4">
+                            <div class="spinner-border text-primary mb-3" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="text-muted">Loading system info...</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-light flex-fill py-2 rounded-3" data-bs-dismiss="modal">Close</button>
+                    <button onclick="fixMissingArticles()" class="btn btn-secondary-custom flex-fill py-2 rounded-3">
+                        <i class="fas fa-wrench me-2"></i>Fix Articles
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let importModal, debugModal;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            importModal = new bootstrap.Modal(document.getElementById('import-modal'));
+            debugModal = new bootstrap.Modal(document.getElementById('debug-modal'));
+            
+            // Strip credentials from URL to prevent fetch issues
+            if (window.location.href.includes('@')) {
+                const newUrl = window.location.href.replace(/\/\/.*@/, '//');
+                history.replaceState(null, '', newUrl);
+            }
+            
+            loadArticles();
+            loadDrafts();
+        });
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(`${tab}-tab`).classList.add('active');
+            document.getElementById('published-list').classList.toggle('d-none', tab !== 'published');
+            document.getElementById('drafts-list').classList.toggle('d-none', tab !== 'drafts');
+
+            if (tab === 'published') {
+                loadArticles();
+            } else if (tab === 'drafts') {
+                loadDrafts();
+            }
+        }
+
+        document.getElementById('published-tab').addEventListener('click', () => switchTab('published'));
+        document.getElementById('drafts-tab').addEventListener('click', () => switchTab('drafts'));
+
+        async function loadArticles() {
+            try {
+                const response = await fetch(window.location.origin + '/api/articles');
+                if (!response.ok) throw new Error('Failed to load articles');
+                const articles = await response.json();
+                const container = document.getElementById('published-list');
+
+                if (articles.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="fas fa-newspaper text-muted mb-3" style="font-size: 2rem; opacity: 0.3;"></i>
+                            <h3 class="fw-bold text-dark mb-2">No Published Articles</h3>
+                            <p class="text-muted mb-4">Start creating amazing content!</p>
+                            <a href="/admin/edit" class="btn btn-primary-custom text-white">
+                                <i class="fas fa-plus me-2"></i>Create Article
+                            </a>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = articles.map(article => `
+                    <div class="article-row">
+                        <div class="d-flex flex-column sm:flex-row sm:justify-content-between sm:align-items-center gap-3">
+                            <div class="flex-grow-1 min-w-0">
+                                <h3 class="fw-semibold text-dark mb-2">${article.title}</h3>
+                                <div class="d-flex align-items-center flex-wrap gap-2">
+                                    <span class="category-tag">${article.label}</span>
+                                    <span class="text-muted small d-flex align-items-center">
+                                        <i class="far fa-calendar me-1 text-primary"></i>
+                                        ${new Date(article.createDate).toLocaleDateString()}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2 sm:ms-4">
+                                <a href="/admin/edit?permalink=${article.permalink}" class="icon-btn edit" title="Edit" aria-label="Edit article ${article.title}">
+                                    <i class="fas fa-edit" aria-hidden="true"></i>
+                                </a>
+                                <button onclick="deleteArticle('${article.permalink}')" class="icon-btn delete" title="Delete" aria-label="Delete article ${article.title}">
+                                    <i class="fas fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading articles:', error);
+                const container = document.getElementById('published-list');
+                container.innerHTML = `
+                    <div class="text-center py-5">
+                        <i class="fas fa-exclamation-triangle text-warning mb-3" style="font-size: 2rem;"></i>
+                        <h3 class="fw-bold text-dark mb-2">Error Loading Articles</h3>
+                        <button onclick="loadArticles()" class="btn btn-primary-custom text-white mt-2">
+                            <i class="fas fa-redo me-2"></i>Try Again
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        async function loadDrafts() {
+            try {
+                const response = await fetch(window.location.origin + '/api/articles?drafts=true');
+                if (!response.ok) throw new Error('Failed to load drafts');
+                const drafts = await response.json();
+                const container = document.getElementById('drafts-list');
+
+                if (drafts.length === 0) {
+                    container.innerHTML = `
+                        <div class="text-center py-5">
+                            <i class="fas fa-file-lines text-muted mb-3" style="font-size: 2rem; opacity: 0.3;"></i>
+                            <h3 class="fw-bold text-dark mb-2">No Drafts</h3>
+                            <p class="text-muted">Your draft articles will appear here</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                container.innerHTML = drafts.map(draft => `
+                    <div class="article-row">
+                        <div class="d-flex flex-column sm:flex-row sm:justify-content-between sm:align-items-center gap-3">
+                            <div class="flex-grow-1 min-w-0">
+                                <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+                                    <span class="draft-tag">Draft</span>
+                                    <h3 class="fw-semibold text-dark mb-0">${draft.title}</h3>
+                                </div>
+                                <div class="d-flex align-items-center flex-wrap gap-2">
+                                    <span class="category-tag">${draft.label}</span>
+                                    <span class="text-muted small d-flex align-items-center">
+                                        <i class="far fa-calendar me-1 text-primary"></i>
+                                        ${new Date(draft.createDate).toLocaleDateString()}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-2 sm:ms-4">
+                                <a href="/admin/edit?permalink=${draft.permalink}" class="icon-btn edit" title="Edit" aria-label="Edit draft ${draft.title}">
+                                    <i class="fas fa-edit" aria-hidden="true"></i>
+                                </a>
+                                <button onclick="publishDraft('${draft.permalink}')" class="icon-btn publish" title="Publish" aria-label="Publish draft ${draft.title}">
+                                    <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                                </button>
+                                <button onclick="deleteArticle('${draft.permalink}')" class="icon-btn delete" title="Delete" aria-label="Delete draft ${draft.title}">
+                                    <i class="fas fa-trash" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading drafts:', error);
+                const container = document.getElementById('drafts-list');
+                container.innerHTML = `
+                    <div class="text-center py-5 text-danger">
+                        <i class="fas fa-exclamation-triangle mb-3" style="font-size: 2rem;"></i>
+                        <h3 class="fw-bold mb-2">Error Loading Drafts</h3>
+                    </div>
+                `;
+            }
+        }
+
+        async function deleteArticle(permalink) {
+            if (!confirm('Are you sure you want to delete this article?')) return;
+
+            try {
+                const response = await fetch(window.location.origin + '/api/articles/' + permalink, { method: 'DELETE' });
+                if (response.ok) {
+                    showNotification('Article deleted successfully');
+                    loadArticles();
+                    loadDrafts();
+                } else {
+                    throw new Error('Delete failed');
+                }
+            } catch (error) {
+                showNotification('Error deleting article', 'error');
+            }
+        }
+
+        async function publishDraft(permalink) {
+            try {
+                const response = await fetch(window.location.origin + '/api/articles/' + permalink);
+                if (!response.ok) throw new Error('Draft not found');
+                const draft = await response.json();
+                draft.status = 'published';
+
+                const updateResponse = await fetch(window.location.origin + '/api/articles/' + permalink, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(draft)
+                });
+
+                if (updateResponse.ok) {
+                    showNotification('Draft published successfully!');
+                    loadDrafts();
+                    loadArticles();
+                } else {
+                    throw new Error('Publish failed');
+                }
+            } catch (error) {
+                showNotification('Error publishing draft', 'error');
+            }
+        }
+
+        async function exportArticles() {
+            try {
+                const response = await fetch(window.location.origin + '/api/export');
+                if (!response.ok) throw new Error('Export failed');
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `blog-export-${new Date().toISOString().split('T')[0]}.json`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                showNotification('Articles exported successfully');
+            } catch (error) {
+                showNotification('Export failed', 'error');
+            }
+        }
+
+        function openImportModal() {
+            importModal.show();
+            document.getElementById('import-file').value = '';
+        }
+
+        async function importArticles() {
+            const fileInput = document.getElementById('import-file');
+            const file = fileInput.files[0];
+            if (!file) {
+                showNotification('Please select a file', 'warning');
+                return;
+            }
+            
+            try {
+                const text = await file.text();
+                const articles = JSON.parse(text);
+                if (!Array.isArray(articles)) throw new Error('Invalid file format');
+
+                const response = await fetch(window.location.origin + '/api/import', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: text
+                });
+                
+                const result = await response.json();
+                if (response.ok) {
+                    showNotification(`Successfully imported ${result.imported} articles`);
+                    importModal.hide();
+                    loadArticles();
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                showNotification('Import failed: ' + error.message, 'error');
+            }
+        }
+
+        async function showDebugInfo() {
+            try {
+                const response = await fetch(window.location.origin + '/api/debug');
+                const data = await response.json();
+                
+                let debugHTML = `
+                    <div class="space-y-4">
+                        <div class="bg-white rounded-3 p-4 border">
+                            <h4 class="fw-bold text-dark mb-3">System Summary</h4>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);">
+                                        <span class="fw-bold text-primary fs-3">${data.total}</span>
+                                        <p class="text-muted small mb-0">Total Articles</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3 rounded-3 text-center" style="background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);">
+                                        <span class="fw-bold text-info fs-3">${data.systemIndexNum || 'N/A'}</span>
+                                        <p class="text-muted small mb-0">System Index</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                `;
+
+                if (data.allArticles && data.allArticles.length > 0) {
+                    debugHTML += `
+                        <div class="bg-white rounded-3 p-4 border">
+                            <h4 class="fw-bold text-dark mb-3">Article Status</h4>
+                            <div class="d-flex flex-column gap-2" style="max-height: 300px; overflow-y: auto;">
+                    `;
+                    
+                    data.allArticles.forEach(item => {
+                        const statusIcon = item.exists ? 'fa-check-circle text-success' : 'fa-times-circle text-danger';
+                        const statusBg = item.exists ? 'bg-success' : 'bg-danger';
+                        debugHTML += `
+                            <div class="d-flex justify-content-between align-items-center p-3 rounded-3 ${statusBg} bg-opacity-10">
+                                <span class="fw-medium text-dark flex-grow-1 me-3">${item.index.title}</span>
+                                <div class="d-flex align-items-center gap-2">
+                                    <i class="fas ${statusIcon}"></i>
+                                    <span class="stat-badge">${item.index.status || 'published'}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    debugHTML += `</div></div>`;
+                }
+
+                debugHTML += `</div>`;
+                
+                document.getElementById('debug-content').innerHTML = debugHTML;
+                debugModal.show();
+            } catch (error) {
+                showNotification('Error loading debug info', 'error');
+            }
+        }
+
+        async function fixMissingArticles() {
+            if (!confirm('This will attempt to fix any missing article data. Continue?')) return;
+            
+            try {
+                const response = await fetch(window.location.origin + '/api/fix-missing-articles', { method: 'POST' });
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showNotification(`Fixed ${result.fixedCount} articles`, 'success');
+                    debugModal.hide();
+                    loadArticles();
+                    loadDrafts();
+                } else {
+                    throw new Error(result.error);
+                }
+            } catch (error) {
+                showNotification('Error fixing articles: ' + error.message, 'error');
+            }
+        }
+
+        async function logout() {
+            try {
+                await fetch('/api/logout', { method: 'POST' });
+                window.location.href = '/login';
+            } catch (error) {
+                showNotification('Logout failed', 'error');
+            }
+        }
+
+        function showNotification(message, type = 'success') {
+            const colors = {
+                success: 'bg-success',
+                warning: 'bg-warning',
+                error: 'bg-danger',
+                info: 'bg-primary'
+            };
+            
+            const icons = {
+                success: 'fa-check-circle',
+                warning: 'fa-exclamation-triangle',
+                error: 'fa-times-circle',
+                info: 'fa-info-circle'
+            };
+            
+            const notification = document.createElement('div');
+            notification.setAttribute('role', 'status');
+            notification.setAttribute('aria-live', 'polite');
+            notification.className = `notification fixed-top-0 end-0 m-3 p-3 rounded-3 shadow-lg text-white fw-medium d-flex align-items-center gap-2 ${colors[type] || colors.success}`;
+            notification.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 250px;';
+            notification.innerHTML = `<i class="fas ${icons[type] || icons.success}" aria-hidden="true"></i><span>${message}</span>`;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(120%)';
+                notification.style.opacity = '0';
+                notification.style.transition = 'all 0.5s ease';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 500);
+            }, 3000);
+        }
+    </script>
+    
+    {{codeBeforBody}}
+</body>
+</html>

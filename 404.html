@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - {{siteName}}</title>
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f0f9ff 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.98);
+            border: 1px solid rgba(99, 102, 241, 0.08);
+            border-radius: 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+        
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #eef2ff 0%, #e0e7ff 100%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .icon-wrapper i {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .text-gradient {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            color: white;
+        }
+        
+        .btn-secondary-custom {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid #eef2ff;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #475569;
+        }
+        
+        .btn-secondary-custom:hover {
+            background: white;
+            border-color: #4f46e5;
+            transform: translateY(-2px);
+            color: #4f46e5;
+        }
+        
+        .footer-custom {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(99, 102, 241, 0.08);
+        }
+        
+        .help-card {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(99, 102, 241, 0.08);
+            border-radius: 16px;
+            padding: 1rem 1.25rem;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: all 0.3s ease;
+        }
+        
+        .help-card:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(79, 70, 229, 0.08);
+            color: inherit;
+        }
+    </style>
+    
+    {{codeBeforHead}}
+</head>
+<body class="min-h-screen d-flex flex-column">
+    <!-- Navigation -->
+    <nav class="navbar-custom sticky-top">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center py-3">
+                <a href="/" class="d-flex align-items-center text-decoration-none">
+                    <div class="rounded-3 d-flex align-items-center justify-content-center me-3" 
+                         style="width: 44px; height: 44px; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);">
+                        <i class="fas fa-feather-alt text-white fs-5"></i>
+                    </div>
+                    <span class="fs-5 fw-bold text-dark">{{siteName}}</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-1 d-flex align-items-center py-5">
+        <div class="container">
+            <div class="text-center mx-auto" style="max-width: 520px;">
+                <div class="glass-card p-4 p-md-5 shadow-lg">
+                    <div class="text-center">
+                        <div class="icon-wrapper mx-auto">
+                            <i class="fas fa-compass"></i>
+                        </div>
+                        
+                        <span class="fw-bold text-gradient d-block" style="font-size: 5rem; line-height: 1; margin-bottom: 0.5rem;">404</span>
+                        
+                        <h1 class="fw-bold text-dark mb-3">Page Not Found</h1>
+                        <p class="text-muted mb-4 mx-auto" style="max-width: 400px;">
+                            The page you're looking for doesn't exist or has been moved. Let's get you back on track.
+                        </p>
+                        
+                        <div class="d-flex flex-column sm:flex-row gap-3 justify-content-center">
+                            <a href="/" class="btn btn-primary-custom text-white">
+                                <i class="fas fa-home me-2"></i>
+                                Back to Homepage
+                            </a>
+                            <button onclick="window.history.back()" class="btn btn-secondary-custom">
+                                <i class="fas fa-arrow-left me-2"></i>
+                                Go Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mt-4">
+                    <div class="col-4">
+                        <a href="/" class="help-card text-center">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center mx-auto mb-2" 
+                                 style="width: 44px; height: 44px; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);">
+                                <i class="fas fa-home text-primary"></i>
+                            </div>
+                            <h3 class="fw-semibold text-dark small mb-1">Home</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="col-4">
+                        <a href="/bookmarks" class="help-card text-center">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center mx-auto mb-2" 
+                                 style="width: 44px; height: 44px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                                <i class="fas fa-bookmark text-warning"></i>
+                            </div>
+                            <h3 class="fw-semibold text-dark small mb-1">Bookmarks</h3>
+                        </a>
+                    </div>
+                    
+                    <div class="col-4">
+                        <a href="/rss.xml" class="help-card text-center">
+                            <div class="rounded-3 d-flex align-items-center justify-content-center mx-auto mb-2" 
+                                 style="width: 44px; height: 44px; background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);">
+                                <i class="fas fa-rss text-success"></i>
+                            </div>
+                            <h3 class="fw-semibold text-dark small mb-1">RSS Feed</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-custom mt-auto py-4">
+        <div class="container text-center">
+            <p class="text-muted mb-0 small">{{copyRight}}</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                window.history.back();
+            }
+            if ((e.key === 'h' || e.key === 'H') && !e.ctrlKey && !e.metaKey) {
+                window.location.href = '/';
+            }
+        });
+    </script>
+    
+    {{codeBeforBody}}
+</body>
+</html>

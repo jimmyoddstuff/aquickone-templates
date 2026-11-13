@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bookmarks - {{siteName}}</title>
+    
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f8fafc 0%, #eef2ff 50%, #f0f9ff 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+        }
+        
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+        
+        .bookmark-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(99, 102, 241, 0.08);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+        }
+        
+        .bookmark-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(79, 70, 229, 0.1);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+        
+        .card-image {
+            position: relative;
+            overflow: hidden;
+            height: 200px;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .bookmark-card:hover .card-image img {
+            transform: scale(1.08);
+        }
+        
+        .category-badge {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            color: #d97706;
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .btn-primary-custom {
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            border: none;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);
+            color: white;
+        }
+        
+        .btn-primary-custom:hover {
+            background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+            color: white;
+        }
+        
+        .btn-delete {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            color: #dc2626;
+            border: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-delete:hover {
+            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .share-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            color: #64748b;
+        }
+        
+        .share-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            color: #4f46e5;
+        }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .line-clamp-3 {
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .footer-custom {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(99, 102, 241, 0.08);
+        }
+        
+        .notification {
+            animation: slideIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(120%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Focus-visible ring for accessibility */
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        select:focus-visible,
+        textarea:focus-visible {
+            outline: 3px solid #4f46e5 !important;
+            outline-offset: 2px !important;
+        }
+
+        /* Respect prefers-reduced-motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+                scroll-behavior: auto !important;
+            }
+            .bookmark-card:hover {
+                transform: none !important;
+            }
+            .bookmark-card:hover .card-image img {
+                transform: none !important;
+            }
+            .btn-delete:hover, .share-btn:hover {
+                transform: none !important;
+            }
+        }
+    </style>
+    
+    {{codeBeforHead}}
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Navigation -->
+    <nav class="navbar-custom sticky-top">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center py-3">
+                <a href="/" class="d-flex align-items-center text-decoration-none">
+                    <div class="rounded-3 d-flex align-items-center justify-content-center me-3" 
+                         style="width: 44px; height: 44px; background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);">
+                        <i class="fas fa-feather-alt text-white fs-5"></i>
+                    </div>
+                    <span class="fs-5 fw-bold text-dark">{{siteName}}</span>
+                </a>
+                
+                <div class="d-flex align-items-center gap-2">
+                    <a href="/" class="btn btn-outline-dark rounded-3 px-3 py-2 d-flex align-items-center gap-2">
+                        <i class="fas fa-home"></i>
+                        <span class="d-none d-sm-inline">Home</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-1 py-5">
+        <div class="container">
+            <!-- Header Card -->
+            <div class="card border-0 shadow-sm mb-5" style="border-radius: 20px; background: rgba(255,255,255,0.95);">
+                <div class="card-body p-4 p-md-5">
+                    <div class="d-flex align-items-center gap-4">
+                        <div class="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0" 
+                             style="width: 64px; height: 64px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);">
+                            <i class="fas fa-bookmark text-yellow-600 fs-3"></i>
+                        </div>
+                        <div>
+                            <h1 class="fw-bold text-dark mb-1">My Bookmarks</h1>
+                            <p class="text-muted mb-0">Articles you've saved for later</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bookmarks Grid -->
+            <div id="bookmarks-container" class="row g-4" aria-live="polite">
+                <!-- Loading State -->
+                <div class="col-12">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary mb-3" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="text-muted">Loading bookmarks...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-custom mt-auto py-4">
+        <div class="container text-center">
+            <p class="text-muted mb-0 small">{{copyRight}}</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function getBookmarks() {
+            try {
+                return JSON.parse(localStorage.getItem('blog_bookmarks') || '[]');
+            } catch {
+                return [];
+            }
+        }
+
+        function loadBookmarks() {
+            const bookmarks = getBookmarks();
+            const container = document.getElementById('bookmarks-container');
+            
+            if (bookmarks.length === 0) {
+                container.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <div class="mb-4">
+                            <i class="fas fa-bookmark text-muted" style="font-size: 3rem; opacity: 0.3;"></i>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-2">No bookmarks yet</h3>
+                        <p class="text-muted mb-4 mx-auto" style="max-width: 400px;">Start bookmarking articles you love and they'll appear here for easy access!</p>
+                        <a href="/" class="btn btn-primary-custom text-white">
+                            <i class="fas fa-compass me-2"></i>Browse Articles
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = bookmarks.map(bookmark => {
+                const imgHtml = bookmark.img ? 
+                    `<img src="${bookmark.img}" alt="${bookmark.title}" loading="lazy">` : 
+                    `<div class="d-flex align-items-center justify-content-center bg-light" style="height: 100%;">
+                        <i class="fas fa-bookmark text-muted" style="font-size: 2rem; opacity: 0.3;"></i>
+                     </div>`;
+                
+                return `
+                <div class="col-md-6 col-lg-4">
+                    <article class="bookmark-card">
+                        <div class="card-image">
+                            ${imgHtml}
+                            <div class="position-absolute top-3 start-3">
+                                <span class="category-badge">${bookmark.label}</span>
+                            </div>
+                            <div class="position-absolute top-3 end-3">
+                                <div class="rounded-3 d-flex align-items-center justify-content-center" 
+                                     style="width: 36px; height: 36px; background: rgba(255,255,255,0.95); box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                                    <i class="fas fa-bookmark text-yellow-500"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-4 d-flex flex-column">
+                            <h3 class="fw-bold text-dark mb-2 line-clamp-2">${bookmark.title}</h3>
+                            ${bookmark.excerpt ? `<p class="text-muted small mb-0 line-clamp-3">${bookmark.excerpt}</p>` : ''}
+                            <div class="d-flex justify-content-between align-items-center pt-3 border-top mt-3">
+                                <a href="/article/${bookmark.permalink}" class="text-primary text-decoration-none fw-semibold small">
+                                    Read More <i class="fas fa-arrow-right ms-1"></i>
+                                </a>
+                                <div class="d-flex gap-2">
+                                    <button onclick="shareArticle('${bookmark.permalink}', '${bookmark.title}')" 
+                                            class="share-btn"
+                                            title="Share article"
+                                            aria-label="Share article ${bookmark.title}">
+                                        <i class="fas fa-share-alt" aria-hidden="true"></i>
+                                    </button>
+                                    <button onclick="removeBookmark('${bookmark.permalink}')"
+                                            class="btn btn-delete"
+                                            title="Remove bookmark"
+                                            aria-label="Remove bookmark for ${bookmark.title}">
+                                        <i class="fas fa-trash" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                `;
+            }).join('');
+        }
+
+        function removeBookmark(permalink) {
+            const bookmarks = getBookmarks();
+            const filtered = bookmarks.filter(bookmark => bookmark.permalink !== permalink);
+            localStorage.setItem('blog_bookmarks', JSON.stringify(filtered));
+            loadBookmarks();
+            showNotification('Bookmark removed', 'warning');
+        }
+
+        let currentSharePermalink = '';
+        let currentShareTitle = '';
+
+        function shareArticle(permalink, title) {
+            currentSharePermalink = permalink;
+            currentShareTitle = title;
+            const url = `${window.location.origin}/article/${permalink}`;
+            
+            const shareUrls = {
+                twitter: `https://twitter.com/intent/tweet?text=${encodeURIComponent(title)}&url=${encodeURIComponent(url)}`,
+                facebook: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
+                linkedin: `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`
+            };
+            
+            // Default to Twitter share
+            window.open(shareUrls.twitter, '_blank', 'width=600,height=400');
+        }
+
+        function showNotification(message, type = 'warning') {
+            const colors = {
+                success: 'bg-success',
+                warning: 'bg-warning',
+                error: 'bg-danger',
+                info: 'bg-primary'
+            };
+            
+            const icons = {
+                success: 'fa-check-circle',
+                warning: 'fa-bookmark',
+                error: 'fa-exclamation-circle',
+                info: 'fa-info-circle'
+            };
+            
+            const notification = document.createElement('div');
+            notification.setAttribute('role', 'status');
+            notification.setAttribute('aria-live', 'polite');
+            notification.className = `notification text-white fw-medium d-flex align-items-center gap-2 ${colors[type] || colors.warning}`;
+            notification.style.cssText = 'position: fixed; top: 20px; right: 20px; z-index: 9999; min-width: 250px; padding: 0.75rem 1rem; border-radius: 0.75rem; box-shadow: 0 10px 25px rgba(0,0,0,0.15);';
+            notification.innerHTML = `<i class="fas ${icons[type] || icons.warning}" aria-hidden="true"></i><span>${message}</span>`;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.transform = 'translateX(120%)';
+                notification.style.opacity = '0';
+                notification.style.transition = 'all 0.5s ease';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 500);
+            }, 3000);
+        }
+
+        document.addEventListener('DOMContentLoaded', loadBookmarks);
+    </script>
+    
+    {{codeBeforBody}}
+</body>
+</html>
